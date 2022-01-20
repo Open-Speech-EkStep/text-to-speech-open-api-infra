@@ -1,0 +1,79 @@
+replicaCount: 1
+# proto_descriptor: "protos/speech-recognition-open-api.pb"
+image:
+  # image.repository -- image repository
+  repository: envoyproxy/envoy
+  # image.tag -- image tag (chart's appVersion value will be used if not set)
+  tag: ""
+  # image.pullPolicy -- image pull policy
+  pullPolicy: IfNotPresent
+
+# imagePullSecrets -- image pull secret for private images
+imagePullSecrets: []
+# nameOverride -- override name of the chart
+nameOverride: ""
+# fullnameOverride -- full name of the chart.
+fullnameOverride: ""
+
+# podSecurityContext -- specifies security settings for a pod
+podSecurityContext: {}
+# fsGroup: 2000
+
+service:
+  # service.type -- service type
+  type: ClusterIP
+  # service.port -- service port
+  port: 80
+  # service.annotations -- annotations to add to the service
+  annotations: {}
+
+# resources -- custom resource configuration
+resources: {}
+# limits:
+#   cpu: 100m
+#   memory: 128Mi
+# requests:
+#   cpu: 100m
+#   memory: 128Mi
+
+# nodeSelector -- node for scheduler pod assignment
+nodeSelector: {}
+
+# tolerations -- tolerations for scheduler pod assignment
+tolerations: []
+
+# affinity -- affinity for scheduler pod assignment
+affinity: {}
+
+# volumeMounts -- volume mounts
+volumeMounts:
+#  - name: data
+#    mountPath: /envoy-data
+
+# volumes -- volumes
+volumes:
+#  - name: data
+#    emptyDir: {}
+
+# args -- extra args to pass to container
+args: []
+
+livenessProbe:
+  httpGet:
+    # livenessProbe.httpGet.path -- path for liveness probe
+    path: /
+    # livenessProbe.httpGet.port -- port for liveness probe
+    port: http
+
+readinessProbe:
+  httpGet:
+    # readinessProbe.httpGet.path -- path for readiness probe
+    path: /
+    # readinessProbe.httpGet.port -- port for readiness probe
+    port: http
+
+# containerPort -- container port, should match static port_value from config.yaml
+containerPort: 51052
+
+# containerPort -- container port, should match admin port_value from config.yaml
+containerAdminPort: 9902

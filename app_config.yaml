@@ -1,0 +1,8 @@
+base_name: tts-open-api-v1
+config:
+  - languages:
+      - en
+      - hi
+    gpu:
+      count: 0
+      accelerator: ''
