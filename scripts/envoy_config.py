@@ -41,7 +41,7 @@ def get_cluster(clusters, language_code):
 def create_cluster(language_code, release_name):
     cluster = '''
         name: api_cluster
-        type: LOGICAL_DNS
+        type: STRICT_DNS
         lb_policy: ROUND_ROBIN
         connect_timeout: 30s
         dns_lookup_family: V4_ONLY
