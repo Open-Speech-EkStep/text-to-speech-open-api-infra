@@ -32,6 +32,10 @@ spec:
           hostPath:
             path: {{ .Values.volumes.path }}
             type: {{ .Values.volumes.type }}
+        - name: {{ .Values.volumes.translitVolumeName }}
+          hostPath:
+            path: {{ .Values.volumes.translitVolumePath }}
+            type: {{ .Values.volumes.translitVolumeType }}
       containers:
         - name: {{ .Chart.Name }}
           securityContext:
@@ -43,21 +47,15 @@ spec:
               value: {{ .Values.env.languages | squote }}
           ports:
             - name: http
-              containerPort: 50052
+              containerPort: 5000
               protocol: TCP
-          livenessProbe:
-            httpGet:
-              path: /
-              port: http
-          readinessProbe:
-            httpGet:
-              path: /
-              port: http
           resources:
             {{- toYaml .Values.resources | nindent 12 }}
           volumeMounts:
             - name: {{ .Values.volumes.name }}
               mountPath: {{ .Values.volumes.mountPath }}
+            - name: {{ .Values.volumes.translitVolumeName }}
+              mountPath: {{ .Values.volumes.translitVolumeMountPath }}
       {{- with .Values.nodeSelector }}
       nodeSelector:
         {{- toYaml . | nindent 8 }}

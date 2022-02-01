@@ -53,7 +53,7 @@ def create_cluster(language_code, release_name):
                 address:
                   socket_address:
                     address: localhost
-                    port_value: 50052
+                    port_value: 5000
     '''
     cluster = ordered_load(cluster, yaml.SafeLoader)
     cluster_name = "{}_cluster".format(language_code)

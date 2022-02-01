@@ -24,6 +24,10 @@ volumes:
   path: /opt/share/aai4b/tts_models
   type: Directory
   mountPath: /opt/text_to_speech_open_api/deployed_models/
+  translitVolumeName: translitmodelsvolume
+  translitVolumeMountPath: /opt/text_to_speech_open_api/vakyansh-tts/src/glow_tts/tts_infer/translit_models/
+  translitVolumeType: Directory
+  translitVolumePath: /opt/share/aai4b/translit_models
 
 securityContext: {}
   # capabilities:
@@ -44,7 +48,7 @@ serviceAccount:
 
 service:
   type: ClusterIP
-  port: 50052
+  port: 5000
 
 resources:
   requests:
@@ -88,4 +92,4 @@ affinity: {}
 
 
 env:
- languages : ["hi"]
+ languages : '["hi"]'
