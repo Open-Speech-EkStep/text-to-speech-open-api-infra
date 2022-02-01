@@ -2,11 +2,13 @@ import subprocess
 from collections import OrderedDict
 import yaml
 
+
 def parse_boolean_string(value):
     if value == 'true':
         return True
     else:
         return False
+
 
 def ordered_load(stream, Loader=yaml.SafeLoader, object_pairs_hook=OrderedDict):
     class OrderedLoader(Loader):
@@ -36,11 +38,13 @@ def ordered_dump(data, stream=None, Dumper=yaml.SafeDumper, **kwds):
 
 
 def cmd_runner(command, caller):
+    # print(command, caller)
     result = subprocess.run(command, shell=True, capture_output=True)
     if result.stderr:
         print("Error:", result.stderr)
     if result.stdout:
         print("Helm => ", caller, " Out => ", result.stdout.decode('utf-8'), "\n")
+
 
 def write_to_yaml(config, path):
     with open(path, "w") as file:

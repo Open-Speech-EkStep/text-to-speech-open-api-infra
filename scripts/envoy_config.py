@@ -1,4 +1,8 @@
-from utilities import cmd_runner, ordered_load
+import subprocess
+
+from scripts.utilities import cmd_runner, ordered_load
+import yaml
+
 
 class EnvoyConfig:
 
@@ -14,21 +18,16 @@ class EnvoyConfig:
         else:
             return True
 
-    def deploy(self, namespace, enable_ingress):
+    def deploy(self, namespace):
         isdeployed = self.is_deployed(namespace)
         if not isdeployed:
             process = "install"
         else:
             process = "upgrade"
 
-        command = "helm {0} --timeout 180s {1} {2} --namespace {3} --set ingress.enabled='{4}'".format(process,
-                                                                                                       self.release_name,
-                                                                                                       self.helm_chart_path,
-                                                                                                       namespace,
-                                                                                                       enable_ingress)
+        command = "helm {0} --timeout 180s {1} {2} --namespace {3}".format(process, self.release_name,
+                                                                           self.helm_chart_path, namespace)
         cmd_runner(command, "Envoy")
-
-
 
 
 def get_cluster(clusters, language_code):
@@ -37,6 +36,7 @@ def get_cluster(clusters, language_code):
         if cluster["name"] == cluster_name:
             return cluster
     return None
+
 
 def create_cluster(language_code, release_name):
     cluster = '''
@@ -63,6 +63,7 @@ def create_cluster(language_code, release_name):
         "address"] = release_name
     return cluster
 
+
 def verify_and_update_release_name(cluster, release_name):
     address = cluster["load_assignment"]["endpoints"][0]["lb_endpoints"][0]["endpoint"]["address"]["socket_address"][
         "address"]
@@ -70,12 +71,14 @@ def verify_and_update_release_name(cluster, release_name):
         cluster["load_assignment"]["endpoints"][0]["lb_endpoints"][0]["endpoint"]["address"]["socket_address"][
             "address"] = release_name
 
+
 def get_rest_match_filter(method_name, routes, language_code):
     path_to_match = "/v1/{}/{}".format(method_name, language_code)
     for route in routes:
         if "prefix" in route["match"] and route["match"]["prefix"] == path_to_match:
             return route
     return None
+
 
 def create_rest_match_filter(method_name, language_code, cluster_name):
     route_match = '''
@@ -89,6 +92,7 @@ def create_rest_match_filter(method_name, language_code, cluster_name):
     route_match["match"]["prefix"] = "/v1/{}/{}".format(method_name, language_code)
     route_match["route"]["cluster"] = cluster_name
     return route_match
+
 
 def update_envoy_config(config, language_config):
     methods_config = [

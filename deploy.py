@@ -1,9 +1,9 @@
 import argparse
 
-from src.utilities import parse_boolean_string, write_to_yaml, read_config_yaml
-from src.helm_utils import get_releases, remove_unwanted_releases
-from src.envoy_config import EnvoyConfig, update_envoy_config
-from src.language_config import MultiLanguageConfig, LanguageConfig
+from scripts.utilities import parse_boolean_string, write_to_yaml, read_config_yaml
+from scripts.helm_utils import get_releases, remove_unwanted_releases
+from scripts.envoy_config import EnvoyConfig, update_envoy_config
+from scripts.language_config import MultiLanguageConfig, LanguageConfig
 
 if __name__ == "__main__":
     parser = argparse.ArgumentParser(description='')
@@ -47,7 +47,7 @@ if __name__ == "__main__":
     for item in configuration:
 
         gpu_count = 0
-        cpu_count = 0
+        cpu_count = 2
         enable_gpu = False
         languages = []
 
@@ -78,4 +78,4 @@ if __name__ == "__main__":
     remove_unwanted_releases(new_releases, existing_releases, namespace)
 
     write_to_yaml(envoy_config, envoy_config_path)
-    EnvoyConfig(release_base_name, envoy_helm_chart_path).deploy(namespace, enable_ingress)
+    EnvoyConfig(release_base_name, envoy_helm_chart_path).deploy(namespace)

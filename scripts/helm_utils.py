@@ -1,5 +1,7 @@
-from utilities import cmd_runner, ordered_load
+from scripts.utilities import cmd_runner, ordered_load
 import subprocess
+import yaml
+
 
 def get_releases(base_name, namespace):
     result = subprocess.getoutput('helm list -f "^{}-(.*)" -n {} -o yaml'.format(base_name, namespace))

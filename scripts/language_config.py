@@ -1,4 +1,6 @@
 import subprocess
+from scripts.utilities import cmd_runner
+
 
 class LanguageConfig:
 
@@ -41,7 +43,8 @@ class LanguageConfig:
             gpu_count, enable_gpu)
         set_cpu_command = "--set resources.requests.cpu='{}' --set env.gpu='{}'".format(cpu_count, False)
 
-        command = "helm {0} --timeout 180s {1} {2} --namespace {3} --set env.languages='[\"{4}\"]' --set image.pullPolicy='{5}' --set image.repository='{6}' --set image.tag='{7}'".format(
+        command = "helm {0} --timeout 180s {1} {2} --namespace {3} --set env.languages='[\"{4}\"]' --set " \
+                  "image.pullPolicy='{5}' --set image.repository='{6}' --set image.tag='{7}'".format(
             process, self.release_name, self.helm_chart_path, namespace, self.language_code,
             pull_policy, image_name,
             image_version)
@@ -49,7 +52,7 @@ class LanguageConfig:
             command = "{} {}".format(command, set_gpu_command)
         else:
             command = "{} {}".format(command, set_cpu_command)
-        print(command)
+        # print(command)
         cmd_runner(command, "LANGUAGE :" + self.language_code)
 
 
@@ -79,7 +82,7 @@ class MultiLanguageConfig:
                image_version):
         if len(self.language_code_list) == 0:
             raise ValueError("No Language codes present.Please add language codes or remove the item from list")
-            return
+
         is_deployed = self.is_deployed(namespace)
         print("IS_DEPLOYED", is_deployed)
         if is_deployed == True:
@@ -99,13 +102,13 @@ class MultiLanguageConfig:
 
         languages = ["\"{}\"".format(x) for x in self.language_code_list]
         languages = "\,".join(languages)
-        command = "helm {0} --timeout 180s {1} {2} --namespace {3} --set env.languages='[{4}]' --set image.pullPolicy='{5}' --set image.repository='{6}' --set image.tag='{7}'".format(
+        command = "helm {0} --timeout 180s {1} {2} --namespace {3} --set env.languages='[{4}]' --set " \
+                  "image.pullPolicy='{5}' --set image.repository='{6}' --set image.tag='{7}'".format(
             process, self.release_name, self.helm_chart_path, namespace, languages, pull_policy, image_name,
             image_version)
         if enable_gpu == True:
             command = "{} {}".format(command, set_gpu_command)
         else:
             command = "{} {}".format(command, set_cpu_command)
-        print(command)
+        # print(command)
         cmd_runner(command, "LANGUAGE :" + ",".join(self.language_code_list))
-
