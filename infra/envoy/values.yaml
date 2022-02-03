@@ -98,7 +98,7 @@ readinessProbe:
     port: http
 
 # containerPort -- container port, should match static port_value from config.yaml
-containerPort: 51052
+containerPort: 9000
 
 # containerPort -- container port, should match admin port_value from config.yaml
 containerAdminPort: 9902

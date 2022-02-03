@@ -85,6 +85,7 @@ def create_rest_match_filter(method_name, language_code, cluster_name):
         match:
           prefix: "/v1/{}/hi"
         route:
+          prefix_rewrite: "/"
           cluster: hi_cluster
           timeout: 60s
     '''.format(method_name)
