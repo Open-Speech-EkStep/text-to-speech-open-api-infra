@@ -72,33 +72,30 @@ def verify_and_update_release_name(cluster, release_name):
             "address"] = release_name
 
 
-def get_rest_match_filter(method_name, routes, language_code):
-    path_to_match = "/v1/{}/{}".format(method_name, language_code)
+def get_rest_match_filter(routes, language_code):
+    path_to_match = "/v1/{}".format(language_code)
     for route in routes:
         if "prefix" in route["match"] and route["match"]["prefix"] == path_to_match:
             return route
     return None
 
 
-def create_rest_match_filter(method_name, language_code, cluster_name):
+def create_rest_match_filter(language_code, cluster_name):
     route_match = '''
         match:
-          prefix: "/v1/{}/hi"
+          prefix: "/v1/hi"
         route:
           prefix_rewrite: "/"
           cluster: hi_cluster
           timeout: 60s
-    '''.format(method_name)
+    '''
     route_match = ordered_load(route_match, yaml.SafeLoader)
-    route_match["match"]["prefix"] = "/v1/{}/{}".format(method_name, language_code)
+    route_match["match"]["prefix"] = "/v1/{}".format(language_code)
     route_match["route"]["cluster"] = cluster_name
     return route_match
 
 
 def update_envoy_config(config, language_config):
-    methods_config = [
-        {"name": "synthesize", "enable_rest_match": True}
-    ]
 
     listeners = config["static_resources"]["listeners"]
     clusters = config["static_resources"]["clusters"]
@@ -117,13 +114,9 @@ def update_envoy_config(config, language_config):
     language_codes = language_config.get_language_code_as_list()
     initial_routes_length = len(routes)
     for language_code in language_codes:
-        for method_config in methods_config:
-            method_name = method_config["name"]
-
-            if "enable_rest_match" in method_config and (method_config["enable_rest_match"] == True):
-                rest_match_route = get_rest_match_filter(method_name, routes, language_code)
-                if rest_match_route is None:
-                    rest_match_route = create_rest_match_filter(method_name, language_code, cluster["name"])
-                    routes.insert(len(routes) - initial_routes_length, rest_match_route)
+        rest_match_route = get_rest_match_filter(routes, language_code)
+        if rest_match_route is None:
+            rest_match_route = create_rest_match_filter(language_code, cluster["name"])
+            routes.insert(len(routes) - initial_routes_length, rest_match_route)
 
     return config
