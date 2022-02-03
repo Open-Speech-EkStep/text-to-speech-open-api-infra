@@ -97,7 +97,7 @@ def create_rest_match_filter(method_name, language_code, cluster_name):
 
 def update_envoy_config(config, language_config):
     methods_config = [
-        {"name": "tts", "enable_rest_match": True}
+        {"name": "synthesize", "enable_rest_match": True}
     ]
 
     listeners = config["static_resources"]["listeners"]
