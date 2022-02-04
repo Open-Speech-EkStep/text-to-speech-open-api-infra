@@ -30,8 +30,8 @@ pipeline {
         }
         stage("Deploy") {
             steps {
-                sh "chmod +x ./scripts/install_helm.sh"
-                sh "./scripts/install_helm.sh"
+                sh "chmod +x ./install_helm.sh"
+                sh "./install_helm.sh"
                 withCredentials([
                     file(credentialsId: 'meity-eks-kube', variable: 'KUBECONFIG'),
                     string(credentialsId: 'meity-eks-iam-access', variable: 'AWS_ACCESS_KEY_ID'),
