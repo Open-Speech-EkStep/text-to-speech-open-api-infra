@@ -13,6 +13,6 @@ config:
       - kn
       - te
       - gu
-      gpu:
-        count: 0
-        accelerator: 'nvidia-A100'
+    gpu:
+      count: 0
+      accelerator: 'nvidia-A100'
