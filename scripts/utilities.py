@@ -38,7 +38,7 @@ def ordered_dump(data, stream=None, Dumper=yaml.SafeDumper, **kwds):
 
 
 def cmd_runner(command, caller):
-    # print(command, caller)
+    print(command, caller)
     result = subprocess.run(command, shell=True, capture_output=True)
     if result.stderr:
         print("Error:", result.stderr)
