@@ -4,3 +4,15 @@ config:
       - hi
       - ta
       - ml
+    gpu:
+      count: 0
+      accelerator: 'nvidia-A100'
+
+  - languages:
+      - or
+      - kn
+      - te
+      - gu
+      gpu:
+        count: 0
+        accelerator: 'nvidia-A100'
