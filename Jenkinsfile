@@ -12,7 +12,7 @@ pipeline {
                                 name: 'API_UPDATED'
                             ),
                             string(
-                                defaultValue: 'stage',
+                                defaultValue: 'nltm',
                                 name: 'NAMESPACE'
                             ),
                             string(

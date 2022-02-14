@@ -19,15 +19,15 @@ podAnnotations: {}
 podSecurityContext: {}
   # fsGroup: 2000
 volumes:
-  readOnly: false
   name: modelsvolume
-  path: /opt/share/aai4b/tts_models
+  path: /nlsasfs/home/ekstep/nltm-speech/tts-models
+  readOnly: false
   type: Directory
   mountPath: /opt/text_to_speech_open_api/deployed_models/
   translitVolumeName: translitmodelsvolume
   translitVolumeMountPath: /opt/text_to_speech_open_api/vakyansh-tts/src/glow_tts/tts_infer/translit_models/
   translitVolumeType: Directory
-  translitVolumePath: /opt/share/aai4b/translit_models
+  translitVolumePath: /nlsasfs/home/ekstep/nltm-speech/translit-models
 
 securityContext: {}
   # capabilities:
