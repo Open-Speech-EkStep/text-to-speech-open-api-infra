@@ -41,7 +41,7 @@ if __name__ == "__main__":
     release_base_name = app_config["base_name"]
     configuration = app_config["config"]
 
-    existing_releases = get_releases(release_base_name, namespace)
+    # existing_releases = get_releases(release_base_name, namespace)
 
     new_releases = []
     for item in configuration:
@@ -76,7 +76,7 @@ if __name__ == "__main__":
             envoy_config = update_envoy_config(envoy_config, language_config)
             new_releases.append(language_config.release_name)
 
-    remove_unwanted_releases(new_releases, existing_releases, namespace)
+    # remove_unwanted_releases(new_releases, existing_releases, namespace)
 
     write_to_yaml(envoy_config, envoy_config_path)
     EnvoyConfig(release_base_name, envoy_helm_chart_path).deploy(namespace)
