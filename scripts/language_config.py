@@ -24,7 +24,7 @@ class LanguageConfig:
         return [self.language_code]
 
     def deploy(self, namespace, api_changed, gpu_count, enable_gpu, cpu_count, image_name,
-               image_version):
+               image_version, node_selector_accelerator):
         is_deployed = self.is_deployed(namespace)
         print("IS_DEPLOYED", is_deployed)
         if is_deployed == True:
@@ -41,6 +41,9 @@ class LanguageConfig:
 
         set_gpu_command = "--set resources.limits.\"nvidia\.com/gpu\"='{}' --set env.gpu='{}'".format(
             gpu_count, enable_gpu)
+        
+        if node_selector_accelerator is not None:
+            set_gpu_command = "{} --set nodeSelector.accelerator='{}'".format(set_gpu_command, node_selector_accelerator)
         set_cpu_command = "--set resources.requests.cpu='{}' --set env.gpu='{}'".format(cpu_count, False)
 
         command = "helm {0} --timeout 180s {1} {2} --namespace {3} --set env.languages='[\"{4}\"]' --set " \
@@ -79,7 +82,7 @@ class MultiLanguageConfig:
         return self.language_code_list
 
     def deploy(self, namespace, api_changed, gpu_count, enable_gpu, cpu_count, image_name,
-               image_version):
+               image_version, node_selector_accelerator):
         if len(self.language_code_list) == 0:
             raise ValueError("No Language codes present.Please add language codes or remove the item from list")
 
@@ -98,6 +101,10 @@ class MultiLanguageConfig:
 
         set_gpu_command = "--set resources.limits.\"nvidia\.com/gpu\"='{}' --set env.gpu='{}'".format(
             gpu_count, enable_gpu)
+
+        if node_selector_accelerator is not None:
+            set_gpu_command = "{} --set nodeSelector.accelerator='{}'".format(set_gpu_command, node_selector_accelerator)
+
         set_cpu_command = "--set resources.requests.cpu='{}' --set env.gpu='{}'".format(cpu_count, False)
 
         languages = ["\"{}\"".format(x) for x in self.language_code_list]

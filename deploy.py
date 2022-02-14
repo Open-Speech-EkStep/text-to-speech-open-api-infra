@@ -50,12 +50,13 @@ if __name__ == "__main__":
         cpu_count = 2
         enable_gpu = False
         languages = []
-
+        node_selector_accelerator = None
         if "languages" in item:
             languages = item["languages"]
         if "gpu" in item:
             gpu_count = item["gpu"]["count"]
             enable_gpu = True
+            node_selector_accelerator = item["gpu"]["accelerator"]
         if "cpu" in item:
             cpu_count = item["cpu"]["count"]
 
