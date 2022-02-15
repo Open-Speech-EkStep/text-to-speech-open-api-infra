@@ -5,7 +5,7 @@ config:
       - ta
       - ml
     gpu:
-      count: 0
+      count: 1
       accelerator: 'nvidia-A100'
 
   - languages:
@@ -14,5 +14,5 @@ config:
       - te
       - gu
     gpu:
-      count: 0
+      count: 1
       accelerator: 'nvidia-A100'
