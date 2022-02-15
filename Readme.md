@@ -16,7 +16,7 @@ To install helm in mac, Run the following:
 
     Install python >= 3.7
 
-Run : `pip install requirements.txt`
+    Run : `pip install requirements.txt`
 
 ### Step 3: Configure aws eks configuration to kubeconfig:
 
@@ -33,4 +33,10 @@ Create a namespace using the following command: `kubectl create namespace <names
 To deploy Run the following command:
 ```commandline
 python deploy.py --namespace namespace-name --image-name gcr.io/ekstepspeechrecognition/text_to_speech_open_api --image-version 2.1.15 --api-updated true
+```
+
+### Step 6: To deploy nginx, Run the following:
+
+```
+kubectl apply -f infra/nginx/nginx.yaml -n <namespace-name>
 ```

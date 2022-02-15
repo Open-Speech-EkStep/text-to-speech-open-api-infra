@@ -1,0 +1,117 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: nginx-conf
+data:
+  virtualhost.conf: |
+    server {
+        server_name localhost;
+        resolver 127.0.0.11;
+        listen 80;
+
+        underscores_in_headers on;
+        client_header_timeout 600;
+        client_body_timeout 600;
+        fastcgi_read_timeout 600;
+        client_max_body_size 100M;
+        proxy_connect_timeout       600;
+        proxy_send_timeout          600;
+        proxy_read_timeout          600;
+        send_timeout                600;
+        gzip on;
+        gzip_proxied any;
+        gzip_types text/plain text/xml text/css application/json application/x-javascript text/javascript application/javascript;
+        gzip_vary on;
+        gzip_disable "MSIE [1-6]\.(?!.*SV1)";
+        gzip_comp_level 6;
+        gzip_buffers 16 8k;
+        gzip_min_length 512;
+        add_header Access-Control-Allow-Origin * always;
+        add_header Access-Control-Allow-Headers * always;
+
+        location /tts {
+            resolver 127.0.0.11;
+            return 302 /tts/;
+        }
+        location /tts/ {
+             resolver 127.0.0.11;
+             proxy_pass  http://tts-model-v1-envoy/;
+             proxy_http_version 1.1;
+             proxy_set_header Upgrade $http_upgrade;
+             proxy_set_header Connection "Upgrade";
+             proxy_set_header Host $host;
+        }
+    }
+
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: nginx
+spec:
+  selector:
+    matchLabels:
+      app: nginx
+  strategy:
+    type: RollingUpdate
+    rollingUpdate:
+      maxUnavailable: 0
+      maxSurge: 1
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        app: nginx
+    spec:
+      containers:
+      - name: nginx
+        image: nginx
+        ports:
+        - containerPort: 80
+          name: http
+          protocol: TCP
+        volumeMounts:
+        - mountPath: /etc/nginx/conf.d # mount nginx-conf volumn to /etc/nginx
+          readOnly: true
+          name: nginx-conf
+#        - mountPath: "/etc/nginx/ssl"
+#          name: nginx-asr-ssl
+#          readOnly: true
+      #   - mountPath: /etc/ssl
+      #     readOnly: true
+      #     name: ssl-certificates-creds
+      volumes:
+#      - name: nginx-asr-ssl
+#        secret:
+#          secretName: nginx-asr-ssl
+      - name: nginx-conf
+        configMap:
+          name: nginx-conf # place ConfigMap `nginx-conf` on /etc/nginx
+          items:
+      #       - key: redirect.conf
+      #         path: redirect.conf
+      #       - key: nginx.conf
+      #         path: default.conf
+            - key: virtualhost.conf
+              path: meity.conf # dig directory
+      # - name: ssl-certificates-creds
+      #   secret: 
+      #       secretName: ssl-certificates-creds
+      #       items:
+      #         - key: ULCA_SSL_CHAIN_CRT
+      #           path: ulcacontrib_ssl.crt
+      #         - key: ULCA_SSL_KEY
+      #           path: ulcacontrib_ssl.key
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: nginx
+spec:
+  ports:
+  - name: http
+    port: 80
+    targetPort: 80
+  selector:
+    app: nginx
+  type: LoadBalancer

@@ -4,6 +4,7 @@ metadata:
   name: {{ include "tts-model-v1.fullname" . }}
   labels:
     {{- include "tts-model-v1.labels" . | nindent 4 }}
+    lab: tts-model
 spec:
   {{- if not .Values.autoscaling.enabled }}
   replicas: {{ .Values.replicaCount }}
@@ -11,6 +12,7 @@ spec:
   selector:
     matchLabels:
       {{- include "tts-model-v1.selectorLabels" . | nindent 6 }}
+      lab: tts-model
   template:
     metadata:
       {{- with .Values.podAnnotations }}
@@ -19,6 +21,7 @@ spec:
       {{- end }}
       labels:
         {{- include "tts-model-v1.selectorLabels" . | nindent 8 }}
+        lab: tts-model
     spec:
       {{- with .Values.imagePullSecrets }}
       imagePullSecrets:
@@ -36,6 +39,13 @@ spec:
           hostPath:
             path: {{ .Values.volumes.translitVolumePath }}
             type: {{ .Values.volumes.translitVolumeType }}
+      topologySpreadConstraints:
+        - maxSkew: 1
+          topologyKey: node
+          whenUnsatisfiable: DoNotSchedule
+          labelSelector:
+            matchLabels:
+              lab: tts-model
       containers:
         - name: {{ .Chart.Name }}
           securityContext:
