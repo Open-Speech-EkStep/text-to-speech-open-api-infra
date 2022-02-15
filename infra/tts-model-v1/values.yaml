@@ -92,4 +92,6 @@ affinity: {}
 
 
 env:
- languages : '["hi"]'
+  languages: '["hi"]'
+  gpu: true
+  log_level: "INFO"
