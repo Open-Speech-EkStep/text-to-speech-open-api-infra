@@ -71,37 +71,16 @@ spec:
           name: http
           protocol: TCP
         volumeMounts:
-        - mountPath: /etc/nginx/conf.d # mount nginx-conf volumn to /etc/nginx
+        - mountPath: /etc/nginx/conf.d
           readOnly: true
           name: nginx-conf
-#        - mountPath: "/etc/nginx/ssl"
-#          name: nginx-asr-ssl
-#          readOnly: true
-      #   - mountPath: /etc/ssl
-      #     readOnly: true
-      #     name: ssl-certificates-creds
       volumes:
-#      - name: nginx-asr-ssl
-#        secret:
-#          secretName: nginx-asr-ssl
       - name: nginx-conf
         configMap:
-          name: nginx-conf # place ConfigMap `nginx-conf` on /etc/nginx
+          name: nginx-conf
           items:
-      #       - key: redirect.conf
-      #         path: redirect.conf
-      #       - key: nginx.conf
-      #         path: default.conf
             - key: virtualhost.conf
-              path: meity.conf # dig directory
-      # - name: ssl-certificates-creds
-      #   secret: 
-      #       secretName: ssl-certificates-creds
-      #       items:
-      #         - key: ULCA_SSL_CHAIN_CRT
-      #           path: ulcacontrib_ssl.crt
-      #         - key: ULCA_SSL_KEY
-      #           path: ulcacontrib_ssl.key
+              path: meity.conf
 ---
 apiVersion: v1
 kind: Service
