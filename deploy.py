@@ -50,6 +50,7 @@ if __name__ == "__main__":
         cpu_count = 2
         enable_gpu = False
         languages = []
+        replica_count = None
 
         if "languages" in item:
             languages = item["languages"]
@@ -58,6 +59,10 @@ if __name__ == "__main__":
             enable_gpu = True
         if "cpu" in item:
             cpu_count = item["cpu"]["count"]
+        if "replicaCount" in item:
+            replica_count = item["replicaCount"]
+            if replica_count == 0:
+                replica_count = None
 
         if len(languages) == 0:
             continue
@@ -65,13 +70,13 @@ if __name__ == "__main__":
             language_code = languages[0]
             language_config = LanguageConfig(language_code, release_base_name, language_helm_chart_path)
             language_config.deploy(namespace, api_updated, gpu_count, enable_gpu, cpu_count,
-                                   image_name, image_version)
+                                   image_name, image_version, replica_count)
             envoy_config = update_envoy_config(envoy_config, language_config)
             new_releases.append(language_config.release_name)
         else:
             language_config = MultiLanguageConfig(languages, release_base_name, language_helm_chart_path)
             language_config.deploy(namespace, api_updated, gpu_count, enable_gpu, cpu_count,
-                                   image_name, image_version)
+                                   image_name, image_version, replica_count)
             envoy_config = update_envoy_config(envoy_config, language_config)
             new_releases.append(language_config.release_name)
 

@@ -24,7 +24,7 @@ class LanguageConfig:
         return [self.language_code]
 
     def deploy(self, namespace, api_changed, gpu_count, enable_gpu, cpu_count, image_name,
-               image_version):
+               image_version, replica_count):
         is_deployed = self.is_deployed(namespace)
         print("IS_DEPLOYED", is_deployed)
         if is_deployed == True:
@@ -48,6 +48,10 @@ class LanguageConfig:
             process, self.release_name, self.helm_chart_path, namespace, self.language_code,
             pull_policy, image_name,
             image_version)
+
+        if replica_count is not None:
+            command = f"{command} --set replicaCount={replica_count}"
+        
         if enable_gpu == True:
             command = "{} {}".format(command, set_gpu_command)
         else:
@@ -79,7 +83,7 @@ class MultiLanguageConfig:
         return self.language_code_list
 
     def deploy(self, namespace, api_changed, gpu_count, enable_gpu, cpu_count, image_name,
-               image_version):
+               image_version, replica_count):
         if len(self.language_code_list) == 0:
             raise ValueError("No Language codes present.Please add language codes or remove the item from list")
 
@@ -106,6 +110,10 @@ class MultiLanguageConfig:
                   "image.pullPolicy='{5}' --set image.repository='{6}' --set image.tag='{7}'".format(
             process, self.release_name, self.helm_chart_path, namespace, languages, pull_policy, image_name,
             image_version)
+
+        if replica_count is not None:
+            command = f"{command} --set replicaCount={replica_count}"
+
         if enable_gpu == True:
             command = "{} {}".format(command, set_gpu_command)
         else:
