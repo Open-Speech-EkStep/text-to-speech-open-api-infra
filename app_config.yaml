@@ -3,5 +3,5 @@ config:
   - languages:
       - hi
     gpu:
-      count: 1
-      accelerator: ''
+      count: 0
+      accelerator: 'Tesla-T4'

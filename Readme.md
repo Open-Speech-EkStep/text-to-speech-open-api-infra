@@ -45,5 +45,19 @@ python deploy.py --namespace namespace-name --image-name gcr.io/ekstepspeechreco
 kubectl apply -f infra/nginx/nginx.yaml -n <namespace-name>
 ```
 
-python deploy.py --namespace stage --image-name gcr.io/ekstepspeechrecognition/text_to_speech_open_api --image-version 2.1.15 --api-updated true
+### Step 7: To delete nginx, Run the following:
 ```
+kubectl delete -f infra/nginx/nginx.yaml -n <namespace-name>
+```
+
+### Note:
+To list the installed helm releases, Run the following:
+```
+helm list -n <namespace-name>
+```
+
+To uninstall the installed helm releases, Run the following:
+```
+helm uninstall <release-name> -n <namespace-name>
+```
+
