@@ -7,7 +7,7 @@ config:
     gpu:
       count: 1
       accelerator: 'nvidia-A100'
-
+    replicaCount: 1
   - languages:
       - or
       - kn
