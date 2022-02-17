@@ -6,7 +6,7 @@ config:
       - ml
     gpu:
       count: 1
-      accelerator: 'Tesla-T4'
+      accelerator: 'nvidia-A100'
     replicaCount: 1
   - languages:
       - or
