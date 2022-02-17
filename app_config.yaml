@@ -9,5 +9,5 @@ config:
       - te
       - gu
     gpu:
-      count: 1
-      accelerator: 'Tesla-T4'
+      count: 0
+      accelerator: 'nvidia-A100'
