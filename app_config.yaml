@@ -4,15 +4,10 @@ config:
       - hi
       - ta
       - ml
-    gpu:
-      count: 0
-      accelerator: 'nvidia-A100'
-    replicaCount: 1
-  - languages:
       - or
       - kn
       - te
       - gu
     gpu:
       count: 0
-      accelerator: 'nvidia-A100'
+      accelerator: 'Tesla-T4'
