@@ -26,12 +26,12 @@ config:
   - languages:
       - kn
     gpu:
-      count: 0
+      count: 1
       accelerator: 'Tesla-T4'
     replicaCount: 2
   - languages:
       - gu
     gpu:
-      count: 0
+      count: 1
       accelerator: 'Tesla-T4'
     replicaCount: 2
