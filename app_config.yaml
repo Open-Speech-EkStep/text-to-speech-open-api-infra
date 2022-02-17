@@ -14,7 +14,7 @@ config:
       count: 0
       accelerator: 'nvidia-A100'
       CUDA_VISIBLE_DEVICES: "5"
-    replicaCount: 5
+    replicaCount: 4
   - languages:
       - te
       - or
@@ -22,12 +22,16 @@ config:
       count: 0
       accelerator: 'nvidia-A100'
       CUDA_VISIBLE_DEVICES: "6"
-    replicaCount: 5
+    replicaCount: 4
   - languages:
       - kn
+    gpu:
+      count: 2
+      accelerator: 'Tesla-T4'
+    replicaCount: 4
+  - languages:
       - gu
     gpu:
-      count: 0
-      accelerator: 'nvidia-A100'
-      CUDA_VISIBLE_DEVICES: "7"
-    replicaCount: 5
+      count: 1
+      accelerator: 'Tesla-T4'
+    replicaCount: 2
