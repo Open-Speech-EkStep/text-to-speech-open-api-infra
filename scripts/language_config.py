@@ -24,7 +24,7 @@ class LanguageConfig:
         return [self.language_code]
 
     def deploy(self, namespace, api_changed, gpu_count, enable_gpu, cpu_count, image_name,
-               image_version, node_selector_accelerator, replica_count):
+               image_version, node_selector_accelerator, replica_count, cuda_visible_devices):
         is_deployed = self.is_deployed(namespace)
         print("IS_DEPLOYED", is_deployed)
         if is_deployed == True:
@@ -41,6 +41,9 @@ class LanguageConfig:
 
         set_gpu_command = "--set resources.limits.\"nvidia\.com/gpu\"='{}' --set env.gpu='{}'".format(
             gpu_count, enable_gpu)
+
+        if cuda_visible_devices is not None:
+            set_gpu_command = '{} --set env.CUDA_VISIBLE_DEVICES="{}"'.format(set_gpu_command, cuda_visible_devices)
         
         if node_selector_accelerator is not None:
             set_gpu_command = "{} --set nodeSelector.accelerator='{}'".format(set_gpu_command, node_selector_accelerator)
@@ -86,7 +89,7 @@ class MultiLanguageConfig:
         return self.language_code_list
 
     def deploy(self, namespace, api_changed, gpu_count, enable_gpu, cpu_count, image_name,
-               image_version, node_selector_accelerator, replica_count):
+               image_version, node_selector_accelerator, replica_count, cuda_visible_devices):
         if len(self.language_code_list) == 0:
             raise ValueError("No Language codes present.Please add language codes or remove the item from list")
 
@@ -105,6 +108,9 @@ class MultiLanguageConfig:
 
         set_gpu_command = "--set resources.limits.\"nvidia\.com/gpu\"='{}' --set env.gpu='{}'".format(
             gpu_count, enable_gpu)
+
+        if cuda_visible_devices is not None:
+            set_gpu_command = '{} --set env.CUDA_VISIBLE_DEVICES="{}"'.format(set_gpu_command, cuda_visible_devices)
 
         if node_selector_accelerator is not None:
             set_gpu_command = "{} --set nodeSelector.accelerator='{}'".format(set_gpu_command, node_selector_accelerator)

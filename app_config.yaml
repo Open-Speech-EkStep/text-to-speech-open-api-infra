@@ -1,13 +1,21 @@
 base_name: tts-model-v1
 config:
   - languages:
-      - ta
       - hi
       - ml
       - or
-      - kn
-      - te
       - gu
     gpu:
       count: 0
       accelerator: 'nvidia-A100'
+      CUDA_VISIBLE_DEVICES: "5"
+    replicaCount: 4
+  - languages:
+      - ta
+      - te
+      - kn
+    gpu:
+      count: 0
+      accelerator: 'nvidia-A100'
+      CUDA_VISIBLE_DEVICES: "6"
+    replicaCount: 4
