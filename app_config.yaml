@@ -1,8 +1,8 @@
 base_name: tts-model-v1
 config:
   - languages:
-      - hi
       - ta
+      - hi
       - ml
       - or
       - kn
