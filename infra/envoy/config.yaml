@@ -43,7 +43,6 @@ static_resources:
                   body:
                     inline_string: Not Found
           http_filters:
-          - name: envoy.filters.http.router
             # This filter is only enabled for responses.
           - name: envoy.filters.http.compressor
             typed_config:
@@ -61,4 +60,5 @@ static_resources:
                   window_bits: 10
                   compression_level: BEST_SPEED
                   compression_strategy: DEFAULT_STRATEGY
+          - name: envoy.filters.http.router
   clusters: []
