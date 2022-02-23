@@ -2,6 +2,29 @@ import subprocess
 from scripts.utilities import cmd_runner
 
 
+def append_config(command, enable_gpu, node_name, replica_count, gpu_count=None, cuda_visible_devices=None,
+                  node_selector_accelerator=None):
+    gpu_command = "--set resources.limits.\"nvidia\.com/gpu\"='{}' --set env.gpu='{}'".format(
+        gpu_count, enable_gpu)
+
+    if cuda_visible_devices is not None:
+        gpu_command = '{} --set env.CUDA_VISIBLE_DEVICES="{}"'.format(gpu_command, cuda_visible_devices)
+
+    if node_selector_accelerator is not None:
+        gpu_command = "{} --set nodeSelector.accelerator='{}'".format(gpu_command, node_selector_accelerator)
+
+    cpu_command = "--set resources.requests.cpu='{}' --set env.gpu='{}'".format(cpu_count, False)
+    if replica_count is not None:
+        command = f"{command} --set replicaCount={replica_count}"
+    if node_name is not None:
+        command = "{} --set nodeSelector.\"kubernetes\.io/hostname\"={}".format(command, node_name)
+    if enable_gpu == True:
+        command = "{} {}".format(command, set_gpu_command)
+    else:
+        command = "{} {}".format(command, set_cpu_command)
+    return command
+
+
 class LanguageConfig:
 
     def __init__(self, language_code, base_name, helm_chart_path):
@@ -39,32 +62,14 @@ class LanguageConfig:
 
         pull_policy = "Always" if api_changed == True else "IfNotPresent"
 
-        set_gpu_command = "--set resources.limits.\"nvidia\.com/gpu\"='{}' --set env.gpu='{}'".format(
-            gpu_count, enable_gpu)
-
-        if cuda_visible_devices is not None:
-            set_gpu_command = '{} --set env.CUDA_VISIBLE_DEVICES="{}"'.format(set_gpu_command, cuda_visible_devices)
-        
-        if node_selector_accelerator is not None:
-            set_gpu_command = "{} --set nodeSelector.accelerator='{}'".format(set_gpu_command, node_selector_accelerator)
-        set_cpu_command = "--set resources.requests.cpu='{}' --set env.gpu='{}'".format(cpu_count, False)
-
         command = "helm {0} --timeout 180s {1} {2} --namespace {3} --set env.languages='[\"{4}\"]' --set " \
                   "image.pullPolicy='{5}' --set image.repository='{6}' --set image.tag='{7}'".format(
             process, self.release_name, self.helm_chart_path, namespace, self.language_code,
             pull_policy, image_name,
             image_version)
 
-        if replica_count is not None:
-            command = f"{command} --set replicaCount={replica_count}"
-
-        if node_name is not None:
-            command = "{} --set nodeSelector.\"kubernetes\.io/hostname\"={}".format(command, node_name)
-            
-        if enable_gpu == True:
-            command = "{} {}".format(command, set_gpu_command)
-        else:
-            command = "{} {}".format(command, set_cpu_command)
+        command = append_config(command, enable_gpu, node_name, replica_count, gpu_count, cuda_visible_devices,
+                                node_selector_accelerator)
         # print(command)
         cmd_runner(command, "LANGUAGE :" + self.language_code)
 
@@ -109,17 +114,6 @@ class MultiLanguageConfig:
 
         pull_policy = "Always" if api_changed == True else "IfNotPresent"
 
-        set_gpu_command = "--set resources.limits.\"nvidia\.com/gpu\"='{}' --set env.gpu='{}'".format(
-            gpu_count, enable_gpu)
-
-        if cuda_visible_devices is not None:
-            set_gpu_command = '{} --set env.CUDA_VISIBLE_DEVICES="{}"'.format(set_gpu_command, cuda_visible_devices)
-
-        if node_selector_accelerator is not None:
-            set_gpu_command = "{} --set nodeSelector.accelerator='{}'".format(set_gpu_command, node_selector_accelerator)
-
-        set_cpu_command = "--set resources.requests.cpu='{}' --set env.gpu='{}'".format(cpu_count, False)
-
         languages = ["\"{}\"".format(x) for x in self.language_code_list]
         languages = "\,".join(languages)
         command = "helm {0} --timeout 180s {1} {2} --namespace {3} --set env.languages='[{4}]' --set " \
@@ -127,15 +121,8 @@ class MultiLanguageConfig:
             process, self.release_name, self.helm_chart_path, namespace, languages, pull_policy, image_name,
             image_version)
 
-        if replica_count is not None:
-            command = f"{command} --set replicaCount={replica_count}"
+        command = append_config(command, enable_gpu, node_name, replica_count, gpu_count, cuda_visible_devices,
+                                node_selector_accelerator)
 
-        if node_name is not None:
-            command = "{} --set nodeSelector.\"kubernetes\.io/hostname\"={}".format(command, node_name)
-
-        if enable_gpu == True:
-            command = "{} {}".format(command, set_gpu_command)
-        else:
-            command = "{} {}".format(command, set_cpu_command)
         # print(command)
         cmd_runner(command, "LANGUAGE :" + ",".join(self.language_code_list))

@@ -6,7 +6,6 @@ config:
       count: 1
       accelerator: 'Tesla-T4'
     replicaCount: 4
-    nodeName: "scn32-100g"
   - languages:
       - te
       - ml
@@ -14,7 +13,6 @@ config:
       count: 1
       accelerator: 'Tesla-T4'
     replicaCount: 4
-    nodeName: "scn32-100g"
   - languages:
       - gu
     gpu:
