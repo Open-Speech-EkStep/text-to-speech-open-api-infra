@@ -24,7 +24,7 @@ class LanguageConfig:
         return [self.language_code]
 
     def deploy(self, namespace, api_changed, gpu_count, enable_gpu, cpu_count, image_name,
-               image_version, node_selector_accelerator, replica_count, cuda_visible_devices):
+               image_version, node_selector_accelerator, replica_count, cuda_visible_devices, node_name=None):
         is_deployed = self.is_deployed(namespace)
         print("IS_DEPLOYED", is_deployed)
         if is_deployed == True:
@@ -58,6 +58,9 @@ class LanguageConfig:
         if replica_count is not None:
             command = f"{command} --set replicaCount={replica_count}"
 
+        if node_name is not None:
+            command = "{} --set nodeSelector.\"kubernetes\.io/hostname\"={}".format(command, node_name)
+            
         if enable_gpu == True:
             command = "{} {}".format(command, set_gpu_command)
         else:
@@ -89,7 +92,7 @@ class MultiLanguageConfig:
         return self.language_code_list
 
     def deploy(self, namespace, api_changed, gpu_count, enable_gpu, cpu_count, image_name,
-               image_version, node_selector_accelerator, replica_count, cuda_visible_devices):
+               image_version, node_selector_accelerator, replica_count, cuda_visible_devices, node_name=None):
         if len(self.language_code_list) == 0:
             raise ValueError("No Language codes present.Please add language codes or remove the item from list")
 
@@ -126,6 +129,9 @@ class MultiLanguageConfig:
 
         if replica_count is not None:
             command = f"{command} --set replicaCount={replica_count}"
+
+        if node_name is not None:
+            command = "{} --set nodeSelector.\"kubernetes\.io/hostname\"={}".format(command, node_name)
 
         if enable_gpu == True:
             command = "{} {}".format(command, set_gpu_command)

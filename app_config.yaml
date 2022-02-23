@@ -6,6 +6,7 @@ config:
       count: 1
       accelerator: 'Tesla-T4'
     replicaCount: 4
+    nodeName: "scn32-100g"
   - languages:
       - te
       - ml
@@ -13,6 +14,7 @@ config:
       count: 1
       accelerator: 'Tesla-T4'
     replicaCount: 4
+    nodeName: "scn32-100g"
   - languages:
       - gu
     gpu:
@@ -20,6 +22,7 @@ config:
       accelerator: 'nvidia-A100'
       CUDA_VISIBLE_DEVICES: "4"
     replicaCount: 4
+    nodeName: "scn32-100g"
   - languages:
       - kn
     gpu:
@@ -27,6 +30,7 @@ config:
       accelerator: 'nvidia-A100'
       CUDA_VISIBLE_DEVICES: "5"
     replicaCount: 4
+    nodeName: "scn32-100g"
   - languages:
       - ta
     gpu:
@@ -34,6 +38,7 @@ config:
       accelerator: 'nvidia-A100'
       CUDA_VISIBLE_DEVICES: "6"
     replicaCount: 4
+    nodeName: "scn32-100g"
   - languages:
       - or
     gpu:
@@ -41,4 +46,5 @@ config:
       accelerator: 'nvidia-A100'
       CUDA_VISIBLE_DEVICES: "7"
     replicaCount: 4
+    nodeName: "scn32-100g"
 

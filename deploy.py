@@ -70,6 +70,9 @@ if __name__ == "__main__":
             if replica_count == 0:
                 replica_count = None
 
+        if "nodeName" in item:
+            node_name = item["nodeName"]
+
         if len(languages) == 0:
             continue
         elif len(languages) == 1:
