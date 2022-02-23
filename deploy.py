@@ -53,6 +53,7 @@ if __name__ == "__main__":
         node_selector_accelerator = None
         CUDA_VISIBLE_DEVICES = None
         replica_count = None
+        node_name = None
         if "languages" in item:
             languages = item["languages"]
         if "gpu" in item:
