@@ -79,13 +79,15 @@ if __name__ == "__main__":
             language_code = languages[0]
             language_config = LanguageConfig(language_code, release_base_name, language_helm_chart_path)
             language_config.deploy(namespace, api_updated, gpu_count, enable_gpu, cpu_count,
-                                   image_name, image_version, node_selector_accelerator, replica_count, CUDA_VISIBLE_DEVICES)
+                                   image_name, image_version, node_selector_accelerator, replica_count,
+                                   CUDA_VISIBLE_DEVICES, node_name)
             envoy_config = update_envoy_config(envoy_config, language_config)
             new_releases.append(language_config.release_name)
         else:
             language_config = MultiLanguageConfig(languages, release_base_name, language_helm_chart_path)
             language_config.deploy(namespace, api_updated, gpu_count, enable_gpu, cpu_count,
-                                   image_name, image_version, node_selector_accelerator, replica_count, CUDA_VISIBLE_DEVICES)
+                                   image_name, image_version, node_selector_accelerator, replica_count,
+                                   CUDA_VISIBLE_DEVICES, node_name)
             envoy_config = update_envoy_config(envoy_config, language_config)
             new_releases.append(language_config.release_name)
 
