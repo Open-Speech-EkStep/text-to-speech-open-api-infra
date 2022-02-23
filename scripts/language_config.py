@@ -2,7 +2,8 @@ import subprocess
 from scripts.utilities import cmd_runner
 
 
-def append_config(command, enable_gpu, node_name, replica_count, gpu_count=None, cuda_visible_devices=None,
+def append_config(command, enable_gpu, node_name, replica_count, gpu_count=None, cpu_count=None,
+                  cuda_visible_devices=None,
                   node_selector_accelerator=None):
     gpu_command = "--set resources.limits.\"nvidia\.com/gpu\"='{}' --set env.gpu='{}'".format(
         gpu_count, enable_gpu)
@@ -18,10 +19,10 @@ def append_config(command, enable_gpu, node_name, replica_count, gpu_count=None,
         command = f"{command} --set replicaCount={replica_count}"
     if node_name is not None:
         command = "{} --set nodeSelector.\"kubernetes\.io/hostname\"={}".format(command, node_name)
-    if enable_gpu == True:
-        command = "{} {}".format(command, set_gpu_command)
+    if enable_gpu:
+        command = "{} {}".format(command, gpu_command)
     else:
-        command = "{} {}".format(command, set_cpu_command)
+        command = "{} {}".format(command, cpu_command)
     return command
 
 
@@ -68,7 +69,8 @@ class LanguageConfig:
             pull_policy, image_name,
             image_version)
 
-        command = append_config(command, enable_gpu, node_name, replica_count, gpu_count, cuda_visible_devices,
+        command = append_config(command, enable_gpu, node_name, replica_count, gpu_count, cpu_count,
+                                cuda_visible_devices,
                                 node_selector_accelerator)
         # print(command)
         cmd_runner(command, "LANGUAGE :" + self.language_code)
@@ -121,7 +123,8 @@ class MultiLanguageConfig:
             process, self.release_name, self.helm_chart_path, namespace, languages, pull_policy, image_name,
             image_version)
 
-        command = append_config(command, enable_gpu, node_name, replica_count, gpu_count, cuda_visible_devices,
+        command = append_config(command, enable_gpu, node_name, replica_count, gpu_count, cpu_count,
+                                cuda_visible_devices,
                                 node_selector_accelerator)
 
         # print(command)
