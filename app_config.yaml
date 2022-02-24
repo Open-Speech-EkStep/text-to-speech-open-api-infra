@@ -4,5 +4,5 @@ config:
       - hi
     gpu:
       count: 0
-      accelerator: 'Tesla-T4'
+      accelerator: ''
     replicaCount: 1
