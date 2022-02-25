@@ -43,7 +43,8 @@ resources: {}
 #   memory: 128Mi
 
 # nodeSelector -- node for scheduler pod assignment
-nodeSelector: {}
+nodeSelector:
+  name: workload
 
 # tolerations -- tolerations for scheduler pod assignment
 tolerations: []

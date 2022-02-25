@@ -84,7 +84,8 @@ autoscaling:
   targetCPUUtilizationPercentage: 80
   # targetMemoryUtilizationPercentage: 80
 
-nodeSelector: { }
+nodeSelector:
+  name: workload
 
 tolerations: [ ]
 
