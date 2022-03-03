@@ -22,6 +22,10 @@ pipeline {
                             string(
                                 defaultValue: '2.1.10',
                                 name: 'IMAGE_VERSION'
+                            ),
+                            booleanParam(
+                                defaultValue: true, 
+                                name: 'ENABLE_ENVOY_ADMIN'
                             )
                         ])
                     ])
@@ -38,7 +42,7 @@ pipeline {
 	                string(credentialsId: 'meity-eks-iam-secret', variable: 'AWS_SECRET_ACCESS_KEY')
                 ]) {
                     sh 'python3 -m pip install pyyaml'
-                    sh "python3 deploy.py --namespace $params.NAMESPACE --api-updated $params.API_UPDATED --image-name $params.IMAGE_NAME --image-version $params.IMAGE_VERSION"
+                    sh "python3 deploy.py --namespace $params.NAMESPACE --api-updated $params.API_UPDATED --image-name $params.IMAGE_NAME --image-version $params.IMAGE_VERSION --enable-envoy-admin $params.ENABLE_ENVOY_ADMIN"
                 }
             }
         }
