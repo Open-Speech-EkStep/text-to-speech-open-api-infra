@@ -18,15 +18,15 @@ class EnvoyConfig:
         else:
             return True
 
-    def deploy(self, namespace):
+    def deploy(self, namespace, enable_envoy_admin):
         isdeployed = self.is_deployed(namespace)
         if not isdeployed:
             process = "install"
         else:
             process = "upgrade"
 
-        command = "helm {0} --timeout 180s {1} {2} --namespace {3}".format(process, self.release_name,
-                                                                           self.helm_chart_path, namespace)
+        command = "helm {0} --timeout 180s {1} {2} --namespace {3} --set envoyAdmin.enabled='{4}'".format(process, self.release_name,
+                                                                           self.helm_chart_path, namespace, enable_envoy_admin)
         cmd_runner(command, "Envoy")
 
 
@@ -94,6 +94,15 @@ def create_rest_match_filter(language_code, cluster_name):
     route_match["route"]["cluster"] = cluster_name
     return route_match
 
+def update_envoy_config_for_admin(config):
+    admin_config = '''
+    admin:
+      address:
+        socket_address: {address: 0.0.0.0, port_value: 9902}
+    '''
+    admin_config = ordered_load(admin_config, yaml.SafeLoader)
+    config.update(admin_config)
+    return config
 
 def update_envoy_config(config, language_config):
 

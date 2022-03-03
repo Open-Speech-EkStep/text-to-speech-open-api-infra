@@ -2,7 +2,7 @@ import argparse
 
 from scripts.utilities import parse_boolean_string, write_to_yaml, read_config_yaml
 from scripts.helm_utils import get_releases, remove_unwanted_releases
-from scripts.envoy_config import EnvoyConfig, update_envoy_config
+from scripts.envoy_config import EnvoyConfig, update_envoy_config, update_envoy_config_for_admin
 from scripts.language_config import MultiLanguageConfig, LanguageConfig
 
 if __name__ == "__main__":
@@ -11,6 +11,7 @@ if __name__ == "__main__":
     parser.add_argument('--image-name', help="Model api image name", required=True)
     parser.add_argument('--image-version', help="Model api image version", required=True)
     parser.add_argument('--api-updated', default='false', help="Flag if api has changed")
+    parser.add_argument('--enable-envoy-admin', default='true', help="Flag if envoy admin is to be deployed")
 
     args = parser.parse_args()
 
@@ -18,6 +19,7 @@ if __name__ == "__main__":
     image_version = args.image_version
     namespace = args.namespace
     api_updated = args.api_updated
+    enable_envoy_admin = args.enable_envoy_admin
 
     app_config_path = "app_config.yaml"
     envoy_config_path = "infra/envoy/config.yaml"
@@ -30,6 +32,7 @@ if __name__ == "__main__":
     # Argparse library parses all parameters as string. Make sure to handle the boolean values
 
     api_updated = parse_boolean_string(api_updated)
+    enable_envoy_admin = parse_boolean_string(enable_envoy_admin)
 
     if envoy_config is None:
         print("Check the envoy config file")
@@ -93,6 +96,7 @@ if __name__ == "__main__":
             new_releases.append(language_config.release_name)
 
     # remove_unwanted_releases(new_releases, existing_releases, namespace)
-
+    if enable_envoy_admin == True:
+        envoy_config = update_envoy_config_for_admin(envoy_config)
     write_to_yaml(envoy_config, envoy_config_path)
-    EnvoyConfig(release_base_name, envoy_helm_chart_path).deploy(namespace)
+    EnvoyConfig(release_base_name, envoy_helm_chart_path).deploy(namespace, enable_envoy_admin)
