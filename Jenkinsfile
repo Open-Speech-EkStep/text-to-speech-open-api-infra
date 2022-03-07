@@ -24,7 +24,7 @@ pipeline {
                                 name: 'IMAGE_VERSION'
                             ),
                             booleanParam(
-                                defaultValue: true, 
+                                defaultValue: false, 
                                 name: 'ENABLE_ENVOY_ADMIN'
                             )
                         ])
