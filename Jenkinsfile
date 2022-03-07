@@ -23,10 +23,10 @@ pipeline {
                                 defaultValue: '2.1.15',
                                 name: 'IMAGE_VERSION'
                             ),
-+                            booleanParam(
-+                                defaultValue: true, 
-+                                name: 'ENABLE_ENVOY_ADMIN'
-+                            )
+                            booleanParam(
+                                defaultValue: false, 
+                                name: 'ENABLE_ENVOY_ADMIN'
+                            )
                         ])
                     ])
                 }
