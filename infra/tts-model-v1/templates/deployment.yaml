@@ -38,7 +38,7 @@ spec:
             secretName: {{ .Values.volumes.secretName }}
             shareName: {{ .Values.volumes.shareName }}
             readOnly: false
-      - name: {{ .Values.volumes.logsVolumeName }}
+        - name: {{ .Values.volumes.logsVolumeName }}
           azureFile:
             secretName: {{ .Values.volumes.secretName }}
             shareName: {{ .Values.volumes.logsShareName }}
