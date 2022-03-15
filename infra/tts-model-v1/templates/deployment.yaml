@@ -62,6 +62,8 @@ spec:
               value: {{ .Values.env.models_base_path | quote }}
             - name: model_logs_base_path
               value: {{ .Values.env.model_logs_base_path | quote }}
+            - name: translit_model_base_path
+              value: {{ .Values.env.translit_model_base_path | quote }}
 
           ports:
             - name: http
