@@ -28,7 +28,7 @@ volumes:
   logsVolumeName: azurefilesharelogs
   logsShareName: logs
   mountPath: /opt/text_to_speech_open_api/deployed_models/
-  logsVolumeMountPath: /opt/speech_recognition_open_api/logs/
+  logsVolumeMountPath: /opt/text_to_speech_open_api/logs/
   translitVolumeName: azurefilesharetranslit
   translitVolumeMountPath: /opt/text_to_speech_open_api/vakyansh-tts/src/glow_tts/tts_infer/translit_models/
 #  translitVolumeType: Directory
@@ -102,5 +102,5 @@ env:
   gpu: true
   log_level: "INFO"
   CUDA_VISIBLE_DEVICES: "0"
-  models_base_path: '/opt/speech_recognition_open_api/deployed_models/tts_models/'
-  model_logs_base_path: '/opt/speech_recognition_open_api/logs/tts_logs/'
+  models_base_path: '/opt/text_to_speech_open_api/deployed_models/tts_models/'
+  model_logs_base_path: '/opt/text_to_speech_open_api/logs/tts_logs/'
