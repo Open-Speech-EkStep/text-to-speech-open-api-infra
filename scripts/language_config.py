@@ -11,8 +11,12 @@ def append_config(command, enable_gpu, node_name, replica_count, gpu_count=None,
     cpu_command = "--set resources.requests.cpu='{}' --set env.gpu='{}'".format(cpu_count, False)
     if replica_count is not None:
         command = f"{command} --set replicaCount={replica_count}"
+    print("Command before node: "+command)
     if node_name:
-        command = "{} --set nodeSelector.\"kubernetes\.io/hostname\"={}".format(command, node_name)
+        command = f"{command} --set nodeSelector.\"kubernetes\.io/hostname\"={node_name}"
+
+    print("Command After node: "+command)
+
     if enable_gpu:
         gpu_command = "--set resources.limits.\"nvidia\.com/gpu\"='{}' --set env.gpu='{}'".format(
             gpu_count, enable_gpu)
@@ -103,16 +107,16 @@ class MultiLanguageConfig:
 
         is_deployed = self.is_deployed(namespace)
         print("IS_DEPLOYED", is_deployed)
-        if is_deployed == True:
+        if is_deployed:
             process = "upgrade"
-            if api_changed == True:
+            if api_changed:
                 uninstall_command = "helm uninstall {0} --namespace {1}".format(self.release_name, namespace)
                 cmd_runner(uninstall_command, "LANGUAGE :" + ",".join(self.language_code_list))
                 process = "install"
         else:
             process = "install"
 
-        pull_policy = "Always" if api_changed == True else "IfNotPresent"
+        pull_policy = "Always" if api_changed else "IfNotPresent"
 
         languages = ["\"{}\"".format(x) for x in self.language_code_list]
         languages = "\,".join(languages)
@@ -125,5 +129,5 @@ class MultiLanguageConfig:
                                 cuda_visible_devices,
                                 node_selector_accelerator)
 
-        # print(command)
+        print('deploy command: ',command)
         cmd_runner(command, "LANGUAGE :" + ",".join(self.language_code_list))
