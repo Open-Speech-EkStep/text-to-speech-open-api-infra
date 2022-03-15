@@ -33,11 +33,11 @@ spec:
             secretName: {{ .Values.volumes.secretName }}
             shareName: {{ .Values.volumes.shareName }}
             readOnly: false
-        - name: {{ .Values.volumes.translitVolumeName }}
-          azureFile:
-            secretName: {{ .Values.volumes.secretName }}
-            shareName: {{ .Values.volumes.shareName }}
-            readOnly: false
+#        - name: {{ .Values.volumes.translitVolumeName }}
+#          azureFile:
+#            secretName: {{ .Values.volumes.secretName }}
+#            shareName: {{ .Values.volumes.shareName }}
+#            readOnly: false
         - name: {{ .Values.volumes.logsVolumeName }}
           azureFile:
             secretName: {{ .Values.volumes.secretName }}
@@ -72,8 +72,8 @@ spec:
           volumeMounts:
             - name: {{ .Values.volumes.name }}
               mountPath: {{ .Values.volumes.mountPath }}
-            - name: {{ .Values.volumes.translitVolumeName }}
-              mountPath: {{ .Values.volumes.translitVolumeMountPath }}
+#            - name: {{ .Values.volumes.translitVolumeName }}
+#              mountPath: {{ .Values.volumes.translitVolumeMountPath }}
             - name: {{ .Values.volumes.logsVolumeName }}
               mountPath: {{ .Values.volumes.logsVolumeMountPath }}
       {{- with .Values.nodeSelector }}

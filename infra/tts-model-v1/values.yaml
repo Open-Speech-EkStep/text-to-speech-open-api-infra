@@ -30,7 +30,7 @@ volumes:
   mountPath: /opt/text_to_speech_open_api/deployed_models/
   logsVolumeMountPath: /opt/text_to_speech_open_api/logs/
   translitVolumeName: azurefilesharetranslit
-  translitVolumeMountPath: /opt/api_dependencies/vakyansh-tts/tts_infer/
+  translitVolumeMountPath: /opt/text_to_speech_open_api/vakyansh-tts/src/glow_tts/tts_infer/
 #  translitVolumeType: Directory
 #  translitVolumePath: /nlsasfs/home/ekstep/nltm-speech/translit-models
 
@@ -104,3 +104,4 @@ env:
   CUDA_VISIBLE_DEVICES: "0"
   models_base_path: '/opt/text_to_speech_open_api/deployed_models/tts_models/'
   model_logs_base_path: '/opt/text_to_speech_open_api/logs/tts_logs/'
+  translit_model_base_path: '/opt/text_to_speech_open_api/deployed_models/'
