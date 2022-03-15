@@ -30,13 +30,13 @@ spec:
       volumes:
         - name: {{ .Values.volumes.name }}
           azureFile:
-            secretName: { { .Values.volumes.secretName } }
-            shareName: { { .Values.volumes.shareName } }
+            secretName: {{ .Values.volumes.secretName }}
+            shareName: {{ .Values.volumes.shareName }}
             readOnly: false
         - name: {{ .Values.volumes.translitVolumeName }}
           azureFile:
-            secretName: { { .Values.volumes.secretName } }
-            shareName: { { .Values.volumes.shareName } }
+            secretName: {{ .Values.volumes.secretName }}
+            shareName: {{ .Values.volumes.shareName }}
             readOnly: false
       containers:
         - name: {{ .Chart.Name }}
