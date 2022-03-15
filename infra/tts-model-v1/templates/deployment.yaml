@@ -29,13 +29,15 @@ spec:
         {{- toYaml .Values.podSecurityContext | nindent 8 }}
       volumes:
         - name: {{ .Values.volumes.name }}
-          hostPath:
-            path: {{ .Values.volumes.path }}
-            type: {{ .Values.volumes.type }}
+          azureFile:
+            secretName: { { .Values.volumes.secretName } }
+            shareName: { { .Values.volumes.shareName } }
+            readOnly: false
         - name: {{ .Values.volumes.translitVolumeName }}
-          hostPath:
-            path: {{ .Values.volumes.translitVolumePath }}
-            type: {{ .Values.volumes.translitVolumeType }}
+          azureFile:
+            secretName: { { .Values.volumes.secretName } }
+            shareName: { { .Values.volumes.shareName } }
+            readOnly: false
       containers:
         - name: {{ .Chart.Name }}
           securityContext:
@@ -51,6 +53,10 @@ spec:
               value: {{ .Values.env.log_level | quote }}
             - name: CUDA_VISIBLE_DEVICES
               value: {{ .Values.env.CUDA_VISIBLE_DEVICES | quote }}
+            - name: models_base_path
+              value: {{ .Values.env.models_base_path | quote }}
+            - name: model_logs_base_path
+              value: {{ .Values.env.model_logs_base_path | quote }}
 
           ports:
             - name: http
@@ -63,6 +69,8 @@ spec:
               mountPath: {{ .Values.volumes.mountPath }}
             - name: {{ .Values.volumes.translitVolumeName }}
               mountPath: {{ .Values.volumes.translitVolumeMountPath }}
+            - name: {{ .Values.volumes.logsVolumeName }}
+              mountPath: {{ .Values.volumes.logsVolumeMountPath }}
       {{- with .Values.nodeSelector }}
       nodeSelector:
         {{- toYaml . | nindent 8 }}

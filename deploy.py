@@ -1,6 +1,6 @@
 import argparse
 
-from scripts.utilities import parse_boolean_string, write_to_yaml, read_config_yaml
+from scripts.utilities import parse_boolean_string, write_to_yaml, read_config_yaml, cmd_runner
 from scripts.helm_utils import get_releases, remove_unwanted_releases
 from scripts.envoy_config import EnvoyConfig, update_envoy_config, update_envoy_config_for_admin
 from scripts.language_config import MultiLanguageConfig, LanguageConfig
@@ -43,7 +43,7 @@ if __name__ == "__main__":
 
     release_base_name = app_config["base_name"]
     configuration = app_config["config"]
-
+    cmd_runner("kubectl config use-context k8s-ulca-prod", 'set context')
     # existing_releases = get_releases(release_base_name, namespace)
 
     new_releases = []

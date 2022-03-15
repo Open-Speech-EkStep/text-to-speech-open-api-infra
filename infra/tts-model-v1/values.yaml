@@ -19,15 +19,20 @@ podAnnotations: {}
 podSecurityContext: {}
   # fsGroup: 2000
 volumes:
-  name: modelsvolume
-  path: /nlsasfs/home/ekstep/nltm-speech/tts-models
+  name: azurefilesharetts
+#  path: /nlsasfs/home/ekstep/nltm-speech/tts-models
   readOnly: false
-  type: Directory
+#  type: Directory
+  secretName: samba-blob-creds
+  shareName: models
+  logsVolumeName: azurefilesharelogs
+  logsShareName: logs
   mountPath: /opt/text_to_speech_open_api/deployed_models/
-  translitVolumeName: translitmodelsvolume
+  logsVolumeMountPath: /opt/speech_recognition_open_api/logs/
+  translitVolumeName: azurefilesharetranslit
   translitVolumeMountPath: /opt/text_to_speech_open_api/vakyansh-tts/src/glow_tts/tts_infer/translit_models/
-  translitVolumeType: Directory
-  translitVolumePath: /nlsasfs/home/ekstep/nltm-speech/translit-models
+#  translitVolumeType: Directory
+#  translitVolumePath: /nlsasfs/home/ekstep/nltm-speech/translit-models
 
 securityContext: {}
   # capabilities:
@@ -97,3 +102,5 @@ env:
   gpu: true
   log_level: "INFO"
   CUDA_VISIBLE_DEVICES: "0"
+  models_base_path: '/opt/speech_recognition_open_api/deployed_models/tts_models/'
+  model_logs_base_path: '/opt/speech_recognition_open_api/logs/tts_logs/'

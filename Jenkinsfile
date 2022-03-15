@@ -12,7 +12,7 @@ pipeline {
                                 name: 'API_UPDATED'
                             ),
                             string(
-                                defaultValue: 'nltm',
+                                defaultValue: 'tts',
                                 name: 'NAMESPACE'
                             ),
                             string(
@@ -20,7 +20,7 @@ pipeline {
                                 name: 'IMAGE_NAME'
                             ),
                             string(
-                                defaultValue: '2.1.15',
+                                defaultValue: '2.1.29',
                                 name: 'IMAGE_VERSION'
                             ),
                             booleanParam(
