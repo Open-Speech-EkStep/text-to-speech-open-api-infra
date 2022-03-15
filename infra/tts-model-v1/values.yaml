@@ -30,7 +30,7 @@ volumes:
   mountPath: /opt/text_to_speech_open_api/deployed_models/
   logsVolumeMountPath: /opt/text_to_speech_open_api/logs/
   translitVolumeName: azurefilesharetranslit
-  translitVolumeMountPath: /opt/text_to_speech_open_api/vakyansh-tts/src/glow_tts/tts_infer/translit_models/
+  translitVolumeMountPath: /opt/text_to_speech_open_api/vakyansh-tts/src/glow_tts/tts_infer/
 #  translitVolumeType: Directory
 #  translitVolumePath: /nlsasfs/home/ekstep/nltm-speech/translit-models
 
