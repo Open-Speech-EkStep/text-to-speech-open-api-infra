@@ -3,13 +3,13 @@ config:
   - languages:
       - hi
     gpu:
-      count: 1
+      count: 0
       accelerator: ''
   - languages:
       - te
       - ml
     gpu:
-      count: 1
+      count: 0
       accelerator: ''
   - languages:
       - gu
