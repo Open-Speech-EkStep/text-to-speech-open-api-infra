@@ -12,13 +12,12 @@ def append_config(command, enable_gpu, node_name, replica_count, gpu_count=None,
     if replica_count is not None:
         command = f"{command} --set replicaCount={replica_count}"
     if node_name:
-        command = "{} --set nodeSelector.\"kubernetes\.io/hostname\"={}".format(command, node_name)
+        command = f"{command} --set nodeSelector.\"kubernetes\.io/hostname\"={node_name}"
+
     if enable_gpu:
-        gpu_command = "--set resources.limits.\"nvidia\.com/gpu\"='{}' --set env.gpu='{}'".format(
-            gpu_count, enable_gpu)
-        command = "{} {}".format(command, gpu_command)
+        command = f"{command} --set resources.limits.\"nvidia\.com/gpu\"='{gpu_count}' --set env.gpu='{enable_gpu}'"
         if cuda_visible_devices:
-            command = '{} --set env.CUDA_VISIBLE_DEVICES="{}"'.format(gpu_command, cuda_visible_devices)
+            command = '{} --set env.CUDA_VISIBLE_DEVICES="{}"'.format(command, cuda_visible_devices)
     else:
         command = "{} {}".format(command, cpu_command)
     return command
