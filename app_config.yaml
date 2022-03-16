@@ -2,6 +2,7 @@ base_name: tts-model-v1
 config:
   - languages:
       - hi
+      - en
     gpu:
       count: 1
       accelerator: 'Tesla-T4'
@@ -15,6 +16,7 @@ config:
     replicaCount: 4
   - languages:
       - gu
+      - mr
     gpu:
       count: 0
       accelerator: 'nvidia-A100'
@@ -23,6 +25,7 @@ config:
     nodeName: "scn32-100g"
   - languages:
       - kn
+      - bn
     gpu:
       count: 0
       accelerator: 'nvidia-A100'
