@@ -5,6 +5,7 @@ import yaml
 
 def get_releases(base_name, namespace):
     result = subprocess.getoutput('helm list -f "^{}-(.*)" -n {} -o yaml'.format(base_name, namespace))
+    result = result[result.index("- app_version"):]
     release_list = ordered_load(result, yaml.SafeLoader)
     return [release["name"] for release in release_list if
             release["name"] != "{}-envoy".format(base_name) and release["name"] != "{}-proxy".format(base_name)]

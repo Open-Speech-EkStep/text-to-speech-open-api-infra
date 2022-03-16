@@ -44,7 +44,7 @@ if __name__ == "__main__":
     release_base_name = app_config["base_name"]
     configuration = app_config["config"]
     cmd_runner("kubectl config use-context k8s-ulca-prod", 'set context')
-    # existing_releases = get_releases(release_base_name, namespace)
+    existing_releases = get_releases(release_base_name, namespace)
 
     new_releases = []
     for item in configuration:
@@ -95,7 +95,7 @@ if __name__ == "__main__":
             envoy_config = update_envoy_config(envoy_config, language_config)
             new_releases.append(language_config.release_name)
 
-    # remove_unwanted_releases(new_releases, existing_releases, namespace)
+    remove_unwanted_releases(new_releases, existing_releases, namespace)
     if enable_envoy_admin == True:
         envoy_config = update_envoy_config_for_admin(envoy_config)
     write_to_yaml(envoy_config, envoy_config_path)
