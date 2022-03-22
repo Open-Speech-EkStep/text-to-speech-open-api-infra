@@ -96,3 +96,4 @@ env:
   languages: '["hi"]'
   gpu: true
   log_level: "INFO"
+  CUDA_VISIBLE_DEVICES: "0"
