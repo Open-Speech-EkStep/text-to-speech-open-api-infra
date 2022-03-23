@@ -72,7 +72,8 @@ Example:
 python3 deploy.py --namespace stage --api-updated true --enable-ingress false --image-name gcr.io/ekstepspeechrecognition/text_to_speech_open_api --image-version 2.1.21 --enable-envoy-admin true
 ```
 
-Documentation Reference:
+#### Documentation Reference:
+
 TTS Repo https://github.com/Open-Speech-EkStep/text-to-speech-open-api.
 
 Developer Guide https://open-speech-ekstep.github.io/tts_model_api/
