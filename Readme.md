@@ -3,6 +3,7 @@
 This repo helps deploy our TTS services on different infra platforms. We use helm charts to deploy our components.
 
 TTS API Documentation: https://open-speech-ekstep.github.io/tts_model_api/
+
 Deployment Guide: https://open-speech-ekstep.github.io/api_deployment/
 
 
