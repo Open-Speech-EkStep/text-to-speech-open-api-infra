@@ -4,16 +4,20 @@ config:
       - hi
       - en
     gpu:
-      count: 1
-      accelerator: 'Tesla-T4'
-    replicaCount: 4
+      count: 0
+      accelerator: 'nvidia-A100'
+      CUDA_VISIBLE_DEVICES: "3"
+    replicaCount: 2
+    nodeName: "scn32-100g"
   - languages:
       - te
       - ml
     gpu:
-      count: 1
-      accelerator: 'Tesla-T4'
-    replicaCount: 4
+      count: 0
+      accelerator: 'nvidia-A100'
+      CUDA_VISIBLE_DEVICES: "3"
+    replicaCount: 2
+    nodeName: "scn32-100g"
   - languages:
       - gu
       - mr
