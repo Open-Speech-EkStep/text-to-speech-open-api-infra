@@ -25,7 +25,7 @@ class EnvoyConfig:
         else:
             process = "upgrade"
 
-        command = "helm {0} --timeout 180s {1} {2} --namespace {3} --set envoyAdmin.enabled='{4}'".format(process, self.release_name,
+        command = "helm3 {0} --timeout 180s {1} {2} --namespace {3} --set envoyAdmin.enabled='{4}'".format(process, self.release_name,
                                                                            self.helm_chart_path, namespace, enable_envoy_admin)
         cmd_runner(command, "Envoy")
 
