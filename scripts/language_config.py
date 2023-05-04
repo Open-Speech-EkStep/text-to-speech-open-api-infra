@@ -51,7 +51,7 @@ class LanguageConfig:
         if is_deployed == True:
             process = "upgrade"
             if api_changed == True:
-                uninstall_command = "helm uninstall {0} --namespace {1}".format(self.release_name,
+                uninstall_command = "helm3 uninstall {0} --namespace {1}".format(self.release_name,
                                                                                 namespace)
                 cmd_runner(uninstall_command, "LANGUAGE :" + self.language_code)
                 process = "install"
@@ -60,7 +60,7 @@ class LanguageConfig:
 
         pull_policy = "Always" if api_changed == True else "IfNotPresent"
 
-        command = "helm {0} --timeout 180s {1} {2} --namespace {3} --set env.languages='[\"{4}\"]' --set " \
+        command = "helm3 {0} --timeout 180s {1} {2} --namespace {3} --set env.languages='[\"{4}\"]' --set " \
                   "image.pullPolicy='{5}' --set image.repository='{6}' --set image.tag='{7}'".format(
             process, self.release_name, self.helm_chart_path, namespace, self.language_code,
             pull_policy, image_name,
@@ -83,7 +83,7 @@ class MultiLanguageConfig:
         print("Release name", self.release_name)
 
     def is_deployed(self, namespace):
-        result = subprocess.getoutput('helm status {} -n {} --output yaml'.format(self.release_name, namespace))
+        result = subprocess.getoutput('helm3 status {} -n {} --output yaml'.format(self.release_name, namespace))
         if "release: not found" in result.lower():
             return False
         else:
@@ -105,7 +105,7 @@ class MultiLanguageConfig:
         if is_deployed == True:
             process = "upgrade"
             if api_changed == True:
-                uninstall_command = "helm uninstall {0} --namespace {1}".format(self.release_name, namespace)
+                uninstall_command = "helm3 uninstall {0} --namespace {1}".format(self.release_name, namespace)
                 cmd_runner(uninstall_command, "LANGUAGE :" + ",".join(self.language_code_list))
                 process = "install"
         else:
@@ -115,7 +115,7 @@ class MultiLanguageConfig:
 
         languages = ["\"{}\"".format(x) for x in self.language_code_list]
         languages = "\,".join(languages)
-        command = "helm {0} --timeout 180s {1} {2} --namespace {3} --set env.languages='[{4}]' --set " \
+        command = "helm3 {0} --timeout 180s {1} {2} --namespace {3} --set env.languages='[{4}]' --set " \
                   "image.pullPolicy='{5}' --set image.repository='{6}' --set image.tag='{7}'".format(
             process, self.release_name, self.helm_chart_path, namespace, languages, pull_policy, image_name,
             image_version)
